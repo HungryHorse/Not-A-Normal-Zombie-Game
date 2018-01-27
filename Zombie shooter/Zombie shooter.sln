@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zombie shooter", "Zombie shooter.csproj", "{B2BCF170-6C7A-7614-6AC5-3FE49131395A}"
 EndProject
 Global
