@@ -6,11 +6,13 @@ using UnityEngine.AI;
 public class Zombie : MonoBehaviour {
 
     public int Hp;
+    public int damage;
+    float attackCooldown;
+    public float cooldownRate;
     public GameObject ZombieObj;
     NavMeshAgent navAgent;
     public Transform target;
     GameObject Player;
-    int bulletDamage;
 
 	// Use this for initialization
 	void Start ()
@@ -25,19 +27,35 @@ public class Zombie : MonoBehaviour {
     {
         navAgent.SetDestination(target.position);
 
-        bulletDamage = Player.GetComponent<Shooting>().bulletDamage;
+        if(attackCooldown > 0)
+        {
+            attackCooldown -= cooldownRate * Time.deltaTime;
+        }
 	}
 
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Bullet")
         {
-            Hp -= bulletDamage;
+            Hp -= collision.gameObject.GetComponent<Bullet>().damage;
         }
         if(collision.gameObject.tag == "Bullet" && Hp <= 0)
         {
             Destroy(ZombieObj);
         }
+        
+    }
 
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player" && attackCooldown <= 0)
+        {
+            Player.GetComponent<Movement>().health -= damage;
+            attackCooldown = 10;
+        }
+        if (collision.gameObject.tag == "Player" && Player.GetComponent<Movement>().health <= 0)
+        {
+            Destroy(Player);
+        }
     }
 }
